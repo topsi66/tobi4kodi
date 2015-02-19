@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.bolumizle1"
+       name="Bolumizle"
+       version="0.0.1"
+       provider-name="toe">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+	<import addon="script.module.beautifulsoup4" version="4.3.2"/>
+	<import addon="plugin.video.youtube" version="5.0.5"/>
+	<import addon="plugin.video.dailymotion_com" version="2.1.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Videos from bolumizle1.com</summary>
+    <description>Most recent tv series from www.bolumizle1.com</description>
+    <platform>all</platform>
+  </extension>
+</addon>
