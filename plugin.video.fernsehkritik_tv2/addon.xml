@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.fernsehkritik_tv2" name="Fernsehkritik.tv" version="1.0.0" provider-name="toe">
+<addon id="plugin.video.fernsehkritik_tv2" name="Fernsehkritik.tv" version="1.0.0" provider-name="Tobi4Kodi">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.beautifulsoup4" version="4.3.2"/>
@@ -15,8 +15,6 @@
         <description lang="en">The satirical-crucial TV magazin</description>
         <description lang="de">Das satirisch-kritische TV Magazin</description>
         <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-        <source>https://github.com/AddonScriptorDE/plugin.video.fernsehkritik_tv</source>
-        <forum>http://forum.xbmc.org/showthread.php?tid=</forum>
         <website>http://www.fernsehkritik.tv</website>
     </extension>
 </addon>
