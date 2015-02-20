@@ -37,4 +37,46 @@
     <platform>all</platform>
   </extension>
 </addon>
+
+<addon id="plugin.video.fernsehkritik_tv2" name="Fernsehkritik.tv" version="1.0.0" provider-name="toe">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.beautifulsoup4" version="4.3.2"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en">The satirical-crucial TV magazin</summary>
+        <summary lang="de">Das satirisch-kritische TV Magazin</summary>
+        <language>de</language>
+        <description lang="en">The satirical-crucial TV magazin</description>
+        <description lang="de">Das satirisch-kritische TV Magazin</description>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <source>https://github.com/AddonScriptorDE/plugin.video.fernsehkritik_tv</source>
+        <forum>http://forum.xbmc.org/showthread.php?tid=</forum>
+        <website>http://www.fernsehkritik.tv</website>
+    </extension>
+</addon>
+
+<addon id="plugin.video.movie4k"
+	name="Movie4K.to"
+	version="1.0.2"
+	provider-name="eleazarcoding">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.urlresolver"  version="2.1.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Movie4K.to</summary>
+    <description lang="en">Movie4K/Movie2K is one of the best and easiest free movies websites to watch movies on the internet. Simply select the movie of your choice for free and without registration.</description>
+    <platform>all</platform>
+    <forum>http://www.xbmchub.com/forums/eleazars-xbmc-add-repository/</forum>
+    <website>http://www.xbmchub.com/</website>
+  </extension>
+</addon>
 </addons>
