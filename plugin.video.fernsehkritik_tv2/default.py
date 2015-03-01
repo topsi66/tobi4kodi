@@ -30,22 +30,26 @@ def INDEX(p_url):
 	print('INDEX href '+all.attrs['href'])
 
 	folgenum = int(all.attrs['href'].replace('folge-',"").replace('/',""))
-	for counter in range(folgenum,100,-1):
-		print('INDEX counter '+str(counter))
-		#http://fernsehkritik.tv/folge-145/play/
-		url = 'http://fernsehkritik.tv/folge-'+str(counter)+'/play/'
-		print('INDEX url '+url)
-		req = urllib2.Request(url)
-		req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-		response = urllib2.urlopen(req)
-		link=response.read()
-		response.close()
-		soup = BeautifulSoup(link)
-		img = soup.find("video")
-		folge = img.find("source", {"type" : "video/mp4"})
-		print('SUB_INDEX img '+img.attrs['poster'])
-		print('SUB_INDEX src '+folge.attrs['src'])
-		addLink('Folge '+str(counter),folge.attrs['src'],img.attrs['poster'])
+	epc = folgenum - int(xbmcplugin.getSetting( addon_handle,"EpisodeCount" ))
+	for counter in range(folgenum,epc,-1):
+		try:
+			print('INDEX counter '+str(counter))
+			#http://fernsehkritik.tv/folge-145/play/
+			url = 'http://fernsehkritik.tv/folge-'+str(counter)+'/play/'
+			print('INDEX url '+url)
+			req = urllib2.Request(url)
+			req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+			response = urllib2.urlopen(req)
+			link=response.read()
+			response.close()
+			soup = BeautifulSoup(link)
+			img = soup.find("video")
+			folge = img.find("source", {"type" : "video/mp4"})
+			print('SUB_INDEX img '+img.attrs['poster'])
+			print('SUB_INDEX src '+folge.attrs['src'])
+			addLink('Folge '+str(counter),folge.attrs['src'],img.attrs['poster'])
+		except:
+			addLink('Folge '+str(counter)+' nicht verfuegbar',"","")
 
 				
 def addLink(name,url,iconimage):

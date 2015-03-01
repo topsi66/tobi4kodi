@@ -38,7 +38,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.fernsehkritik_tv2" name="Fernsehkritik.tv" version="1.0.0" provider-name="Tobi4Kodi">
+<addon id="plugin.video.fernsehkritik_tv2" name="Fernsehkritik.tv" version="1.0.1" provider-name="Tobi4Kodi">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.beautifulsoup4" version="4.3.2"/>
@@ -60,11 +60,11 @@
 
 <addon id="plugin.video.movie4k"
 	name="Movie4K.to"
-	version="1.0.4"
+	version="1.0.5"
 	provider-name="eleazarcoding">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.urlresolver"  version="3.7.0"/>
+    <import addon="script.module.urlresolver"  version="2.7.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
     <provides>video</provides>
@@ -75,24 +75,6 @@
     <platform>all</platform>
     <forum>http://www.xbmchub.com/forums/eleazars-xbmc-add-repository/</forum>
     <website>http://www.xbmchub.com/</website>
-  </extension>
-</addon>
-
-<addon id="script.module.urlresolver"
-     name="URLResolver"
-     version="3.7.0"
-     provider-name="Eldorado">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0" />
-    <import addon="script.module.t0mm0.common" version="2.0.0"/>
-    <import addon="script.module.simplejson" version="3.3.0"/>
-    <import addon="plugin.video.youtube" version="4.4.7"/>
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <platform>all</platform>
-    <summary lang="en">Resolve common video host URL's to be playable in XBMC/Kodi.</summary>
-    <description lang="en">Resolve common video host URL's to be playable in XBMC/Kodi, simplify addon development of video plugins requiring multi video hosts.</description>
   </extension>
 </addon>
 </addons>

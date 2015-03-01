@@ -1,4 +1,3 @@
 <settings>
-   <setting id="forceView" type="bool" label="30102" default="false"/>
-   <setting id="viewID" type="number" label="30103" enable="eq(-1,true)" default="500"/>
+   <setting id="EpisodeCount" type="text" label="Anzahl Folgen" default="20"/>
 </settings>
