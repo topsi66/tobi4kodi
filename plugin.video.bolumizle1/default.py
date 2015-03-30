@@ -16,62 +16,40 @@ xbmcplugin.setContent(addon_handle, 'movies')
 
 
 def CATEGORIES():
-	addDir('Serien','http://www.bolumizle1.com/',1,'http://www.bolumizle1.com/wp-content/themes/keremiya/logo/logo.png')
+	addDir('Serien','http://www.bolumizle1.com/tum-diziler',1,'http://www.bolumizle1.com/wp-content/themes/keremiya/logo/logo.png')
                        
 def INDEX(p_url):
 	print('INDEX url '+p_url)
 	req = urllib2.Request(p_url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
 	response = urllib2.urlopen(req)
-#	link=response.read()
-#	link=response.read().decode('utf-8', 'ignore')
 	link=response.read().decode('ascii','ignore')
-#        link=link.replace('\xf6',"o").replace('\xd6',"O").replace('\xfc',"u").replace('\xdd',"I").replace('\xfd',"i").replace('\xe7',"c").replace('\xde',"s").replace('\xfe',"s").replace('\xc7',"c").replace('\xf0',"g")
 	response.close()
 	soup = BeautifulSoup(link, from_encoding='latin5')
 	print(soup.original_encoding)
-#	convertEntities=BeautifulSoup.HTML_ENTITIES
-#	print(soup.prettify(encoding="latin5"))
-#		print(soup.title.name)
-#	print(soup.prettify())
-#	serien = [i.findAll('li') for i in soup('div', {'class': 'sidebar-right'})]
-	serien = soup.findAll("li", {"class" : re.compile('cat-item.*')})
+	
+	serien = soup.findAll("td", {"class" : "blocklu"})
 	for i in serien:
 		all = i.find("a")
-#		print(all)
-		print('INDEX name '+all.string)
-		print('INDEX href '+all.attrs['href'])
-		addDir(all.string,all.attrs['href'],2,'next.png')
-#	for link1 in soup.find_all('a'):
-#		print(link1.get('href'))
+		img = all.find("span")
+		addDir(img.string,all.attrs['href'],2,'default')
 
 def SUB_INDEX(p_url):
 	print('SUB_INDEX url '+p_url)
 	req = urllib2.Request(p_url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
 	response = urllib2.urlopen(req)
-#	link=response.read()
-#	link=response.read().decode('utf-8', 'ignore')
 	link=response.read().decode('ascii','ignore')
-#        link=link.replace('\xf6',"o").replace('\xd6',"O").replace('\xfc',"u").replace('\xdd',"I").replace('\xfd',"i").replace('\xe7',"c").replace('\xde',"s").replace('\xfe',"s").replace('\xc7',"c").replace('\xf0',"g")
 	response.close()
 	soup = BeautifulSoup(link, from_encoding='latin5')
-#	print(soup.original_encoding)
-#	convertEntities=BeautifulSoup.HTML_ENTITIES
-#	print(soup.prettify(encoding="latin5"))
-#		print(soup.title.name)
-#	print(soup.prettify())
-#	serien = [i.findAll('li') for i in soup('div', {'class': 'sidebar-right'})]
-	serien = soup.findAll("div", {"class" : "moviefilm"})
+	serien = soup.findAll("div", {"class" : "padder-v"})
 	for i in serien:
 		all = i.find("a")
-		img = i.find("img")
-		print('SUB_INDEX href '+all.attrs['href'])
-		print('SUB_INDEX name '+img.attrs['alt'])
-		print('SUB_INDEX img '+img.attrs['src'])	
-		addDir(img.attrs['alt'],all.attrs['href'],3,img.attrs['src'])
-#	for link1 in soup.find_all('a'):
-#		print(link1.get('href'))
+#		print('SUB_INDEX href '+all.attrs['href'])
+#		print('SUB_INDEX name '+all.attrs['title'])
+#		print('SUB_INDEX img '+img.attrs['src'])	
+		addDir(all.attrs['title'],all.attrs['href'],3,'default')
+
 
 def start_video(url):
 		#url = 'http://www.bolumizle1.com/seref-meselesi-11-bolum-hd-izle.html'
@@ -92,7 +70,7 @@ def start_video(url):
 		#		print ifr
 
 
-		iframes = [i.find('iframe') for i in soup('div', {'class': 'filmicerik'})]
+		iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
 		for i in iframes:
 			print(i.attrs['src'])
 			if (i.attrs['src'].find('netd.com')	> 0):
@@ -123,7 +101,7 @@ def start_video(url):
 		#		xbmcplugin.addDirectoryItem(handle=addon_handle, url=playback_url, listitem=item)
 				icon = "DefaultVideo.png"
 				addDir('Part 1',url,3,icon)
-				parts = soup.findAll("div", {"class" : "keremiya_part"})
+				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
 				for part in parts:
 					j = 1
 					allp = part.findAll("a")
@@ -142,7 +120,7 @@ def start_video(url):
 				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
 				print('dailymotion '+playback_url)
 				addDir('Part 1',url,3,icon)
-				parts = soup.findAll("div", {"class" : "keremiya_part"})
+				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
 				for part in parts:
 					j = 1
 					allp = part.findAll("a")
@@ -157,12 +135,6 @@ def start_video(url):
 				listitem.setInfo( "video", { "Title": 'Start me' } )
 				playlist.add( playback_url, listitem )
 				xbmc.Player(xbmc.PLAYER_CORE_MPLAYER).play( playlist )
-#				SUB_INDEX(url)
-				#				item = xbmcgui.ListItem('Starte Video', iconImage=ICON)
-#				item = xbmcgui.ListItem('Starte Video', path=playback_url)
-#				xbmcplugin.setResolvedUrl(addon_handle, True, item)
-#				xbmcplugin.addDirectoryItem(handle=addon_handle, url=playback_url, listitem=item)
-#				xbmc.Player(xbmc.PLAYER_CORE_MPLAYER).play(playback_url)
 				xbmcplugin.endOfDirectory(addon_handle)
 				
 def addLink(name,url,iconimage):
