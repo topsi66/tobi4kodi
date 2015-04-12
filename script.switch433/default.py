@@ -34,8 +34,8 @@ class MyAddon(xbmcgui.WindowDialog):
 
 		self.b1_btn = xbmcgui.ControlButton(505, 200, 250, 40, u'Ambilight', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
 		self.b2_btn = xbmcgui.ControlButton(505, 255, 250, 40, u'Licht TV', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
-		self.b3_btn = xbmcgui.ControlButton(505, 310, 250, 40, u'Licht Couch', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
-		self.b4_btn = xbmcgui.ControlButton(505, 365, 250, 40, u'Ambilight', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
+		self.b3_btn = xbmcgui.ControlButton(505, 310, 250, 40, u'Licht 2', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
+		self.b4_btn = xbmcgui.ControlButton(505, 365, 250, 40, u'Licht 3', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
 		
 		self.addControl(self.b1_btn)
 		self.addControl(self.b2_btn)
@@ -105,13 +105,13 @@ class MyAddon(xbmcgui.WindowDialog):
 
 	def onControl(self, control):
 		if control == self.b1_btn:
-			os.system('/home/osmc/toggleSleepLight.sh')
+			os.system('/home/osmc/togglePower1.sh')
 		elif control == self.b2_btn:
-			os.system('/home/osmc/01110.2')
+			os.system('/home/osmc/togglePower2.sh')
 		elif control == self.b2_btn:
-			os.system('/home/osmc/01110.3')
+			os.system('/home/osmc/togglePower3.sh')
 		elif control == self.b2_btn:
-			os.system('/home/osmc/01110.4')
+			os.system('/home/osmc/togglePower4.sh')
 		self.set_refresh()
 if __name__ == '__main__':
 	addon = MyAddon()

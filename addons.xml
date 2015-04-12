@@ -79,8 +79,8 @@
 </addon>
 
 <addon id="script.switch433"
-    name="Switch 433"
-    version="1.0.4"
+    name="Power ON"
+    version="1.0.5"
     provider-name="Tobi4Kodi">
     <requires>
         <import addon="xbmc.python" version="2.14.0" />
