@@ -1,4 +1,4 @@
-# script.audio.profiles language file
+# script.switch433
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -7,125 +7,45 @@ msgstr ""
 
 #: Settings
 msgctxt "#32000"
-msgid "Profiles"
+msgid "Switch Names"
 msgstr ""
 
 #: Settings
 msgctxt "#32001"
-msgid "Name of profile 1"
-msgstr ""
-
-#: Settings
-msgctxt "#32013"
-msgid "Includes Settings"
-msgstr ""
-
-#: Settings
-msgctxt "#32014"
-msgid "Other"
-msgstr ""
-
-#: Settings
-msgctxt "#32015"
-msgid "Show audio stream select menu on start playing"
-msgstr ""
-
-#: Settings
-msgctxt "#32016"
-msgid "Auto close select menu"
-msgstr ""
-
-#: Settings
-msgctxt "#32017"
-msgid "Time after which close the menu"
+msgid "Switch 1"
 msgstr ""
 
 #: Settings
 msgctxt "#32002"
-msgid "Settings"
+msgid "Name of Switch 1"
 msgstr ""
 
 #: Settings
 msgctxt "#32003"
-msgid "Name of profile 2"
+msgid "Switch 2"
 msgstr ""
 
 #: Settings
 msgctxt "#32004"
-msgid "Volume level"
-msgstr ""
-
-#: Settings
-msgctxt "#32011"
-msgid "Player settings [Video -> Playback]"
-msgstr ""
-
-#: Settings
-msgctxt "#32012"
-msgid "Video settings [System -> Video]"
+msgid "Name of Switch 2"
 msgstr ""
 
 #: Settings
 msgctxt "#32005"
-msgid "Name of profile 3"
+msgid "Switch 3"
 msgstr ""
 
 #: Settings
 msgctxt "#32006"
-msgid "Name of profile 4"
+msgid "Name of Switch 3"
 msgstr ""
 
 #: Settings
 msgctxt "#32007"
-msgid "Profile 1"
+msgid "Switch 4"
 msgstr ""
 
 #: Settings
 msgctxt "#32008"
-msgid "Profile 2"
-msgstr ""
-
-#: Settings
-msgctxt "#32009"
-msgid "Profile 3"
-msgstr ""
-
-#: Settings
-msgctxt "#32010"
-msgid "Profile 4"
-msgstr ""
-
-#: Script
-msgctxt "#32100"
-msgid "Select profile to save settings"
-msgstr ""
-
-#: Script
-msgctxt "#32106"
-msgid "Select audio profile"
-msgstr ""
-
-#: Script
-msgctxt "#32103"
-msgid "This profile is disabled"
-msgstr ""
-
-#: Script
-msgctxt "#32104"
-msgid "Invalid file for profile"
-msgstr ""
-
-#: Script
-msgctxt "#32105"
-msgid "Enable profiles"
-msgstr ""
-
-#: Script
-msgctxt "#32101"
-msgid "Configure profile"
-msgstr ""
-
-#: Script
-msgctxt "#32102"
-msgid "Saved as profile"
+msgid "Name of Switch 4"
 msgstr ""

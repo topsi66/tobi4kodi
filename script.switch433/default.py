@@ -6,6 +6,14 @@ import xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
+_addon_b1_b = _addon.getSetting( "profile1" ).decode('utf-8')
+_addon_b1_n = _addon.getSetting( "name1" ).decode('utf-8')
+_addon_b2_b = _addon.getSetting( "profile2" ).decode('utf-8')
+_addon_b2_n = _addon.getSetting( "name2" ).decode('utf-8')
+_addon_b3_b = _addon.getSetting( "profile3" ).decode('utf-8')
+_addon_b3_n = _addon.getSetting( "name3" ).decode('utf-8')
+_addon_b4_b = _addon.getSetting( "profile4" ).decode('utf-8')
+_addon_b4_n = _addon.getSetting( "name4" ).decode('utf-8')
 
 ACTION_PREVIOUS_MENU = 10 # Esc
 ACTION_NAV_BACK = 92 # Backspace
@@ -32,10 +40,10 @@ class MyAddon(xbmcgui.WindowDialog):
 
 	def set_controls(self):
 
-		self.b1_btn = xbmcgui.ControlButton(505, 200, 250, 40, u'Ambilight', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
-		self.b2_btn = xbmcgui.ControlButton(505, 255, 250, 40, u'Licht TV', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
-		self.b3_btn = xbmcgui.ControlButton(505, 310, 250, 40, u'Licht 2', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
-		self.b4_btn = xbmcgui.ControlButton(505, 365, 250, 40, u'Licht 3', focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
+		self.b1_btn = xbmcgui.ControlButton(505, 200, 250, 40, _addon_b1_n, focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
+		self.b2_btn = xbmcgui.ControlButton(505, 255, 250, 40, _addon_b2_n, focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
+		self.b3_btn = xbmcgui.ControlButton(505, 310, 250, 40, _addon_b3_n, focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
+		self.b4_btn = xbmcgui.ControlButton(505, 365, 250, 40, _addon_b4_n, focusTexture=button_fo_img,noFocusTexture=button_nf_img, alignment=ALIGN_CENTER)
 		
 		self.addControl(self.b1_btn)
 		self.addControl(self.b2_btn)
@@ -108,9 +116,9 @@ class MyAddon(xbmcgui.WindowDialog):
 			os.system('/home/osmc/togglePower1.sh')
 		elif control == self.b2_btn:
 			os.system('/home/osmc/togglePower2.sh')
-		elif control == self.b2_btn:
+		elif control == self.b3_btn:
 			os.system('/home/osmc/togglePower3.sh')
-		elif control == self.b2_btn:
+		elif control == self.b4_btn:
 			os.system('/home/osmc/togglePower4.sh')
 		self.set_refresh()
 if __name__ == '__main__':
