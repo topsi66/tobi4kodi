@@ -131,9 +131,10 @@ def start_video(url):
 				print('dailymotion.com '+i.attrs['src'])
 				# http://www.dailymotion.com/embed/video/x2egjbg?autoplay=0&logo=1&hideInfos=0&start=0&syndication=134357&foreground=&highlight=&background=
 				icon = "DefaultVideo.png"				
+				video_url = i.attrs['src'].split('?')[0]
 #				url='http://www.dailymotion.com/embed/video/x2egjbg'
 #				video_id = i.attrs['src'].replace('//','').split('/')[3].split('?')[0]
-				playback_url = urlresolver.resolve(url)
+				playback_url = urlresolver.resolve(video_url)
 #				hosted_media_file = HostedMediaFile(url=url)
 #				playback_url = hosted_media_file.resolve()
 #				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
