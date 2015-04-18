@@ -4,6 +4,7 @@ import xbmcplugin
 import urllib2
 import urllib
 import re
+import urlresolver
 from bs4 import BeautifulSoup
 #import codecs
 #import sys
@@ -130,9 +131,12 @@ def start_video(url):
 				print('dailymotion.com '+i.attrs['src'])
 				# http://www.dailymotion.com/embed/video/x2egjbg?autoplay=0&logo=1&hideInfos=0&start=0&syndication=134357&foreground=&highlight=&background=
 				icon = "DefaultVideo.png"				
-				
-				video_id = i.attrs['src'].replace('//','').split('/')[3].split('?')[0]
-				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
+#				url='http://www.dailymotion.com/embed/video/x2egjbg'
+#				video_id = i.attrs['src'].replace('//','').split('/')[3].split('?')[0]
+				playback_url = urlresolver.resolve(url)
+#				hosted_media_file = HostedMediaFile(url=url)
+#				playback_url = hosted_media_file.resolve()
+#				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
 				print('dailymotion '+playback_url)
 				addDir('Part 1',url,3,icon)
 				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
