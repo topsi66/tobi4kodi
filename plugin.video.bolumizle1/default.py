@@ -105,6 +105,15 @@ def start_video(url):
 			#	print(itemimage['content'])	
 				li = xbmcgui.ListItem('Start', iconImage=itemimage['content'])
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+itemurl['content'], listitem=li)	
+			elif (i.attrs['src'].find('mail.ru') > 0):
+				# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+				json_file = i.attrs['src'].replace('.html','.json').replace('/embed','')
+				print('json web: '+json_file)
+				jobj = json.loads(urllib.urlopen(json_file).read())
+				movie_url = urllib.unquote(jobj['videos'][1]['url'])
+				print ('URL mail.ru: '+movie_url)
+				li = xbmcgui.ListItem('Start', iconImage=itemimage['content'])
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=movie_url, listitem=li)		
 			elif (i.attrs['src'].find('youtube') > 0):
 				print('youtube.com '+i.attrs['src'])
 				# //www.youtube.com/embed/mZ1nL3va2nU
