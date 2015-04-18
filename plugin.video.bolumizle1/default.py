@@ -70,9 +70,13 @@ def start_video(url):
 		#		print ifr
 
 
-		iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+		if (link.count('<div id="tekpartli"') > 0):
+			iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
+		else:
+			iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+#		iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
 		for i in iframes:
-			print(i.attrs['src'])
+			print('starte video src '+i.attrs['src'])
 			if (i.attrs['src'].find('netd.com')	> 0):
 				print('netd.com')
 				req = urllib2.Request(i.attrs['src'])
@@ -81,8 +85,19 @@ def start_video(url):
 				link=response.read()
 			#	link=link.replace('\xf6',"o").replace('\xd6',"O").replace('\xfc',"u").replace('\xdd',"I").replace('\xfd',"i").replace('\xe7',"c").replace('\xde',"s").replace('\xfe',"s").replace('\xc7',"c").replace('\xf0',"g").replace('\xC5',"S").replace('\x9E',"S")
 				response.close()
-				print(link)
-				iframe = BeautifulSoup(link)
+				iframe = BeautifulSoup(link)		
+#				print (iframe)
+				scripturl = iframe.body.script.string.replace('window.top.location.href = "','').replace('";','')
+#				print (scripturl)
+				
+				req = urllib2.Request(scripturl)
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				response = urllib2.urlopen(req)
+				link=response.read()
+			#	link=link.replace('\xf6',"o").replace('\xd6',"O").replace('\xfc',"u").replace('\xdd',"I").replace('\xfd',"i").replace('\xe7',"c").replace('\xde',"s").replace('\xfe',"s").replace('\xc7',"c").replace('\xf0',"g").replace('\xC5',"S").replace('\x9E',"S")
+				response.close()
+				iframe = BeautifulSoup(link)		
+				
 				itemurl = iframe.find("meta", {"itemprop":"contentURL"})
 				print('http://media.netd.com.tr'+itemurl['content'])
 				itemimage = iframe.find("meta", {"itemprop":"thumbnailUrl"})
