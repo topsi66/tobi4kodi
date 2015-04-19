@@ -5,6 +5,7 @@ import urllib2
 import urllib
 import re
 import urlresolver
+import json
 from bs4 import BeautifulSoup
 #import codecs
 #import sys
@@ -71,11 +72,11 @@ def start_video(url):
 		#		print ifr
 
 
-		if (link.count('<div id="tekpartli"') > 0):
-			iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
-		else:
-			iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
-#		iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
+#		if (link.count('<div id="tekpartli"') > 0):
+#			iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
+#		else:
+#			iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+		iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
 		for i in iframes:
 			print('starte video src '+i.attrs['src'])
 			if (i.attrs['src'].find('netd.com')	> 0):
@@ -107,13 +108,18 @@ def start_video(url):
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+itemurl['content'], listitem=li)	
 			elif (i.attrs['src'].find('mail.ru') > 0):
 				# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
-				json_file = i.attrs['src'].replace('.html','.json').replace('/embed','')
-				print('json web: '+json_file)
-				jobj = json.loads(urllib.urlopen(json_file).read())
+				json_url = i.attrs['src'].replace('.html','.json').replace('/embed','')
+				req = urllib2.Request(json_url)
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Cookie', 'video_key=dc594aa64a14439aa2829d85b3ed1ea651db4eab')
+				file_e =urllib2.urlopen(req)
+				json_file = unicode(file_e.read())
+				jobj = json.loads(json_file)
 				movie_url = urllib.unquote(jobj['videos'][1]['url'])
 				print ('URL mail.ru: '+movie_url)
-				li = xbmcgui.ListItem('Start', iconImage=itemimage['content'])
-				xbmcplugin.addDirectoryItem(handle=addon_handle, url=movie_url, listitem=li)		
+				li = xbmcgui.ListItem('Start', iconImage="DefaultVideo.png")
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=movie_url, listitem=li)
+				xbmc.Player(xbmc.PLAYER_CORE_MPLAYER).play(movie_url)
 			elif (i.attrs['src'].find('youtube') > 0):
 				print('youtube.com '+i.attrs['src'])
 				# //www.youtube.com/embed/mZ1nL3va2nU
