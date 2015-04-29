@@ -106,6 +106,21 @@ def start_video(url):
 			#	print(itemimage['content'])	
 				li = xbmcgui.ListItem('Start', iconImage=itemimage['content'])
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+itemurl['content'], listitem=li)	
+			elif (i.attrs['src'].find('vk.com') > 0):
+			# url360=http://cs634202v6.vk.me/u294779102/videos/47fab64a09.360.mp4?extra=utKtnOoq241Iag5Cv7QEQsfzgfJ4gUR9NpJhb48_MKv9jmBmPgIPvg7ywAOEy-VTsvKd5fwEc7d3dNRYQwy5R_jT_HCSTZEs8s8xges83UMFJeBy9N4v8ZqmLSyF31fh2g&amp
+				req = urllib2.Request('http:'+i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				posxlink=link.find('url360=')
+				print(posxlink)
+				posylink=link.find('?',posxlink)
+				print(posylink)
+				print (link[posxlink+7:posylink].replace('&amp',''))
+				
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=link[posxlink+7:posylink].replace('&amp',''), listitem=li)
 			elif (i.attrs['src'].find('mail.ru') > 0):
 				# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
 				json_url = i.attrs['src'].replace('.html','.json').replace('/embed','')
