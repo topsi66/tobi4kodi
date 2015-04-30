@@ -124,13 +124,22 @@ def start_video(url):
 			elif (i.attrs['src'].find('mail.ru') > 0):
 				# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
 				json_url = i.attrs['src'].replace('.html','.json').replace('/embed','')
+				cj = CookieJar()
+				opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+				opener.addheaders= [('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'),('Accept-encoding', 'gzip'),('Referer', 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1575.html')]
+				urllib2.install_opener(opener)
 				req = urllib2.Request(json_url)
-				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-				req.add_header('Cookie', 'video_key=dc594aa64a14439aa2829d85b3ed1ea651db4eab')
+				file_e =urllib2.urlopen(req)
+				cookies={}
+				for cookie in cj:
+					if "mail.ru" in cookie.domain:
+						cookies[cookie.name]=cookie.value	
+				req = urllib2.Request(json_url)
+				req.add_header('Cookie', 'video_key='+cookies['video_key'])
 				file_e =urllib2.urlopen(req)
 				json_file = unicode(file_e.read())
 				jobj = json.loads(json_file)
-				movie_url = urllib.unquote(jobj['videos'][1]['url'])
+				movie_url = urllib.unquote(jobj['videos'][0]['url'])+"|Cookie="+"video_key="+cookies['video_key']
 				print ('URL mail.ru: '+movie_url)
 				li = xbmcgui.ListItem('Start', iconImage="DefaultVideo.png")
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url=movie_url, listitem=li)
