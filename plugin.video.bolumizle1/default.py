@@ -7,6 +7,7 @@ import re
 import urlresolver
 import json
 from bs4 import BeautifulSoup
+from cookielib import CookieJar
 #import codecs
 #import sys
 #streamWriter = codecs.lookup('utf-8')[-1]
