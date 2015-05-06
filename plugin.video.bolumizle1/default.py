@@ -156,14 +156,16 @@ def start_video(url):
 				xbmcplugin.setResolvedUrl(addon_handle, True, item)
 		#		xbmcplugin.addDirectoryItem(handle=addon_handle, url=playback_url, listitem=item)
 				icon = "DefaultVideo.png"
-				addDir('Part 1',url,3,icon)
 				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
+				print(parts)
 				for part in parts:
 					j = 1
 					allp = part.findAll("a")
 					for parturl in allp:
-						j = j + 1
-						addDir('Part '+str(j),parturl["href"],3,icon)				
+						if (parturl["href"]<>""):
+							addDir(parturl.string,parturl["href"],3,icon)
+						else:
+							addDir(parturl.string,url,3,icon)			
 				
 				xbmc.Player(xbmc.PLAYER_CORE_MPLAYER).play(playback_url)
 
@@ -179,14 +181,16 @@ def start_video(url):
 #				playback_url = hosted_media_file.resolve()
 #				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
 				print('dailymotion '+playback_url)
-				addDir('Part 1',url,3,icon)
 				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
+				print(parts)
 				for part in parts:
 					j = 1
 					allp = part.findAll("a")
 					for parturl in allp:
-						j = j + 1
-						addDir('Part '+str(j),parturl["href"],3,icon)
+						if (parturl["href"]<>""):
+							addDir(parturl.string,parturl["href"],3,icon)
+						else:
+							addDir(parturl.string,url,3,icon)
 				
 				
 				playlist = xbmc.PlayList( xbmc.PLAYLIST_VIDEO )
