@@ -20,7 +20,7 @@
 
 <addon id="plugin.video.bolumizle1"
        name="Bolumizle"
-       version="1.1.1"
+       version="1.1.2"
        provider-name="Tobi4Kodi">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
