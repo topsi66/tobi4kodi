@@ -61,21 +61,23 @@
 
 <addon id="plugin.video.movie4k"
 	name="Movie4K.to"
-	version="1.0.5"
-	provider-name="eleazarcoding">
+	version="1.2.1"
+	provider-name="eleazarcoding, nickat">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.urlresolver"  version="2.7.0"/>
+    <import addon="script.module.urlresolver"  version="2.9.0"/>
+    <import addon="script.module.xbmcswift2"  version="2.4.0"/>
+    <import addon="script.module.beautifulsoup4"  version="4.3.2"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Movie4K.to</summary>
-    <description lang="en">Movie4K/Movie2K is one of the best and easiest free movies websites to watch movies on the internet. Simply select the movie of your choice for free and without registration.</description>
+    <description lang="en">Movie4K is one of the best and easiest free movies websites to watch movies on the internet. Simply select the movie of your choice for free and without registration.</description>
     <platform>all</platform>
-    <forum>http://www.xbmchub.com/forums/eleazars-xbmc-add-repository/</forum>
-    <website>http://www.xbmchub.com/</website>
+    <forum>http://forums.tvaddons.ag/forums/152-ELEAZAR-S-XBMC-ADD-ON-REPOSITORY</forum>
+    <website>http://www.tvaddons.ag</website>
   </extension>
 </addon>
 
