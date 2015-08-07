@@ -198,6 +198,9 @@ def read_body_and_headers(url, post=None, headers=[], follow_redirects=False, ti
     else:
         _log("read_body_and_headers cookielib available")
         # importing cookielib worked
+        # proxy_handler = urllib2.ProxyHandler({'http':'217.12.25.160:80'})
+        # opener = urllib2.build_opener(proxy_handler)
+        # urlopen = opener.open
         urlopen = urllib2.urlopen
         Request = urllib2.Request
         cj = cookielib.MozillaCookieJar()
