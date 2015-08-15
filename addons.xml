@@ -39,6 +39,27 @@
   </extension>
 </addon>
 
+<addon id="plugin.video.canlidizihd2"
+       name="Canlidizihd2"
+       version="1.1.0"
+       provider-name="Tobi4Kodi">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+	<import addon="script.module.urlresolver"  version="2.7.0"/>
+	<import addon="script.module.beautifulsoup4" version="4.3.2"/>
+	<import addon="plugin.video.youtube" version="5.0.5"/>
+	<import addon="plugin.video.dailymotion_com" version="2.1.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Videos from Canlidizihd2.com</summary>
+    <description>Most recent tv series from www.Canlidizihd2.com</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+
 <addon id="plugin.video.dailymotion_com" name="DailyMotion.com" version="2.1.3" provider-name="AddonScriptorDE">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
