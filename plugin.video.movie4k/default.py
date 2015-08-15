@@ -126,7 +126,7 @@ def movies(params):
 
     plugintools.set_view(plugintools.THUMBNAIL)
 
-    plugintools.add_item( action="movies_cinema",    title="Cinema movies" , thumbnail = os.path.join(THUMBNAIL_PATH,"movies.png") , fanart=FANART, url=MAIN_URL+"index.php", folder=True )
+    plugintools.add_item( action="movies_cinema",    title="Cinema movies" , thumbnail = os.path.join(THUMBNAIL_PATH,"movies.png") , fanart=FANART, url=MAIN_URL+"index.php?lang=de", folder=True )
     plugintools.add_item( action="movies_updates",   title="Latest updates" , thumbnail = os.path.join(THUMBNAIL_PATH,"movies.png") , fanart=FANART, url=MAIN_URL+"movies-updates.html", folder=True )
     plugintools.add_item( action="movies_random", title="Random movie", thumbnail = os.path.join(THUMBNAIL_PATH,"movies.png"), fanart=FANART, url=MAIN_URL, folder=True )
     plugintools.add_item( action="letters",          title="All movies" , thumbnail = os.path.join(THUMBNAIL_PATH,"movies.png") , fanart=FANART, extra="movies-all", url=MAIN_URL+"movies-all.html", folder=True )
@@ -685,7 +685,7 @@ def read_body_and_headers(url, post=None, headers=[], follow_redirects=False, ti
     # languages are filtered out in the movies_updates() function.
     if plugintools.get_setting("only_english")=="true" and not url.endswith('/movies-updates.html'):
         plugintools.log("movie4k.read_body_and_headers only english")
-        headers.append(["Cookie","onlylanguage=en; expires="+expiration_gmt+"; xxx2=ok; expires="+expiration_gmt+";"])
+        headers.append(["Cookie","onlylanguage=de; expires="+expiration_gmt+"; xxx2=ok; expires="+expiration_gmt+";"])
     else:
         headers.append(["Cookie","xxx2=ok; expires="+expiration_gmt+";"])
 

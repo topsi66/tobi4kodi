@@ -39,29 +39,31 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.fernsehkritik_tv2" name="Fernsehkritik.tv" version="1.0.1" provider-name="Tobi4Kodi">
+<addon id="plugin.video.dailymotion_com" name="DailyMotion.com" version="2.1.2" provider-name="AddonScriptorDE">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
-		<import addon="script.module.beautifulsoup4" version="4.3.2"/>
+        <import addon="script.module.simple.downloader" version="1.0.0"/>
+        <import addon="script.module.requests" version="2.4.3"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
         <platform>all</platform>
-        <summary lang="en">The satirical-crucial TV magazin</summary>
-        <summary lang="de">Das satirisch-kritische TV Magazin</summary>
-        <language>de</language>
-        <description lang="en">The satirical-crucial TV magazin</description>
-        <description lang="de">Das satirisch-kritische TV Magazin</description>
-        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-        <website>http://www.fernsehkritik.tv</website>
+        <summary lang="en">Movies, TV, Music, User-Clips, 3D and Livestreams</summary>
+        <language></language>
+        <description lang="en">Movies, TV, Music, User-Clips, 3D and Livestreams</description>
+        <disclaimer lang="en">Some parts of this addon may not be legal in your country of residence - please check with your local laws before installing.</disclaimer>
+        <website>http://www.dailymotion.com</website>
+        <source>https://github.com/AddonScriptorDE/plugin.video.dailymotion_com</source>
+        <forum>http://forum.xbmc.org/showthread.php?tid=142626</forum>
+        <email>AddonScriptorDE at yahoo dot de</email>
     </extension>
 </addon>
 
 <addon id="plugin.video.movie4k"
 	name="Movie4K.to"
-	version="1.2.1"
+	version="1.4.2"
 	provider-name="eleazarcoding, nickat">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -101,24 +103,6 @@
         <email>AddonScriptorDE at yahoo dot de</email>
         <website>http://www.amazon.com</website>
     </extension>
-</addon>
-
-<addon id="script.module.urlresolver"
-     name="URLResolver"
-     version="2.8.0.1"
-     provider-name="Eldorado">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0" />
-    <import addon="script.module.t0mm0.common" version="2.0.0"/>
-    <import addon="script.module.simplejson" version="3.3.0"/>
-    <import addon="plugin.video.youtube" version="4.4.7"/>
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <platform>all</platform>
-    <summary lang="en">Resolve common video host URL's to be playable in XBMC/Kodi.</summary>
-    <description lang="en">Resolve common video host URL's to be playable in XBMC/Kodi, simplify addon development of video plugins requiring multi video hosts.</description>
-  </extension>
 </addon>
 
 <addon id="script.switch433"

@@ -73,11 +73,11 @@ def start_video(url):
 		#		print ifr
 
 
-#		if (link.count('<div id="tekpartli"') > 0):
-#			iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
-#		else:
-#			iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
-		iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+		if (link.count('<div id="tekpartli"') > 0):
+			iframes = [i.find('iframe') for i in soup('div', {'id': 'tekpartli'})]
+		else:
+			iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+#		iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
 		for i in iframes:
 			print('starte video src '+i.attrs['src'])
 			if (i.attrs['src'].find('netd.com')	> 0):
@@ -106,7 +106,23 @@ def start_video(url):
 				itemimage = iframe.find("meta", {"itemprop":"thumbnailUrl"})
 			#	print(itemimage['content'])	
 				li = xbmcgui.ListItem('Start', iconImage=itemimage['content'])
-				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+itemurl['content'], listitem=li)	
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+itemurl['content'], listitem=li)
+			elif (i.attrs['src'].find('vid.ag')	> 0):
+				print('vid.ag')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				response = urllib2.urlopen(req)
+				link=response.read().decode('ascii','ignore')
+				response.close()
+				for inter in range(1,50):
+					if (link.split("|")[inter] == "vid"):
+						vid_id = link.split("|")[inter+2]
+					if (link.split("|")[inter] == "fviews"):
+						vid_hash = link.split("|")[inter-1]
+						break
+				print("vid_id="+vid_id+" vid_hash="+vid_hash)						
+				li = xbmcgui.ListItem('Start', iconImage='default')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://vid.ag/'+vid_hash+".m3u8", listitem=li)				
 			elif (i.attrs['src'].find('vk.com') > 0):
 			# url360=http://cs634202v6.vk.me/u294779102/videos/47fab64a09.360.mp4?extra=utKtnOoq241Iag5Cv7QEQsfzgfJ4gUR9NpJhb48_MKv9jmBmPgIPvg7ywAOEy-VTsvKd5fwEc7d3dNRYQwy5R_jT_HCSTZEs8s8xges83UMFJeBy9N4v8ZqmLSyF31fh2g&amp
 				req = urllib2.Request('http:'+i.attrs['src'])
@@ -181,7 +197,7 @@ def start_video(url):
 #				hosted_media_file = HostedMediaFile(url=url)
 #				playback_url = hosted_media_file.resolve()
 #				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
-				print('dailymotion '+playback_url)
+				print('dailymotion '+str(playback_url))
 				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
 				print(parts)
 				for part in parts:
