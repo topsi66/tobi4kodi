@@ -192,11 +192,11 @@ def start_video(url):
 				icon = "DefaultVideo.png"				
 				video_url = i.attrs['src'].split('?')[0]
 #				url='http://www.dailymotion.com/embed/video/x2egjbg'
-#				video_id = i.attrs['src'].replace('//','').split('/')[3].split('?')[0]
-				playback_url = urlresolver.resolve(video_url)
+				video_id = i.attrs['src'].replace('//','').split('/')[3].split('?')[0]
+#				playback_url = urlresolver.resolve(video_url)
 #				hosted_media_file = HostedMediaFile(url=url)
 #				playback_url = hosted_media_file.resolve()
-#				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
+				playback_url = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&url=%s' % video_id	
 				print('dailymotion '+str(playback_url))
 				parts = soup.findAll("ul", {"class" : "pagination pagination-md yuvarla"})
 				print(parts)
