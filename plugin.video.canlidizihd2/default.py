@@ -74,7 +74,7 @@ def SUB_INDEX(p_url):
 def start_video(url):
 		#url = 'http://www.bolumizle1.com/seref-meselesi-11-bolum-hd-izle.html'
 		#url = 'http://www.bolumizle1.com/aci-hayat-57-bolum-izle.html'
-#		url = 'http://www.bolumizle1.com/beni-boyle-sev-82-bolum-izle.html'
+#		http://www.canlidizihd2.net/player/ok/12.php?v=aHR0cDovL29rLnJ1L3ZpZGVvLzM2ODM1MTY2OTQy
 		print("start_video: "+url)
 		req = urllib2.Request(url)
 		req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
@@ -156,6 +156,7 @@ def start_video(url):
 #				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)	
 			elif (i.attrs['src'].find('canlidizihd2.com')	> 0):
 				print('canlidizihd2.com')
+# http://www.canlidizihd2.net/player/ok/12.php?v=aHR0cDovL29rLnJ1L3ZpZGVvLzM2ODM1MTY2OTQy
 				req = urllib2.Request(i.attrs['src'])
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
 				response = urllib2.urlopen(req)
@@ -164,6 +165,58 @@ def start_video(url):
 				sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
 				url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
 				
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+
+					
+#				li = xbmcgui.ListItem('Start', iconImage='default')
+#				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)	
+			elif (i.attrs['src'].find('canlidizihd2.net')	> 0):
+				print('canlidizihd2.net')
+				req = urllib2.Request(i.attrs['src'])
+#				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				response = urllib2.urlopen(req)
+				link=response.read().decode('ascii','ignore')
+				response.close()
+				sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
+				url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
+				print(url1)
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+
+					
+#				li = xbmcgui.ListItem('Start', iconImage='default')
+#				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)	
+			elif (i.attrs['src'].find('canlidizihd2.org')	> 0):
+				print('canlidizihd2.org')
+#http://www.canlidizihd2.org/player/ok/12.php?v=aHR0cDovL29rLnJ1L3ZpZGVvLzM5MzYyNjkzODU0
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				response = urllib2.urlopen(req)
+				link=response.read().decode('ascii','ignore')
+				response.close()
+#				print (link)
+				soup_src = BeautifulSoup(link)
+#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+				iframe=soup_src.find("iframe")
+#				print(iframe.attrs['src'])
+				url1=iframe.attrs['src']
+#				url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
+#				print(url1)
 				li = xbmcgui.ListItem('Start', iconImage='icon')
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
 

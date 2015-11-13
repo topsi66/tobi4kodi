@@ -107,6 +107,22 @@ def start_video(url):
 			#	print(itemimage['content'])	
 				li = xbmcgui.ListItem('Start', iconImage=itemimage['content'])
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+itemurl['content'], listitem=li)
+			elif (i.attrs['src'].find('netd')	> 0):
+				print('netd')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				
+				posxlink=link.find('path')
+#				print(posxlink)
+				posylink=link.find(',',posxlink)
+#				print(posylink)
+#				print (link[posxlink+7:posylink].replace('"',''))
+				
+				li = xbmcgui.ListItem('Start', iconImage='default')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://media.netd.com.tr'+link[posxlink+7:posylink].replace('"',''), listitem=li)
 			elif (i.attrs['src'].find('vid.ag')	> 0):
 				print('vid.ag')
 				req = urllib2.Request(i.attrs['src'])
