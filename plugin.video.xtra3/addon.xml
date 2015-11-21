@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.xtra3"
+       name="Xtra3"
+       version="1.0.0"
+       provider-name="Tobi4Kodi">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+	<import addon="script.module.urlresolver"  version="2.7.0"/>
+	<import addon="script.module.beautifulsoup4" version="4.3.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Videos Xtra3</summary>
+    <description>Most recent tv series from Xtra3</description>
+    <platform>all</platform>
+  </extension>
+</addon>
