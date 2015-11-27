@@ -134,7 +134,7 @@ def start_video(url):
 					if (link.split("|")[inter] == "vid"):
 						vid_id = link.split("|")[inter+2]
 					if (link.split("|")[inter] == "fviews"):
-						vid_hash = link.split("|")[inter-1]
+						vid_hash = link.split("|")[inter-2]
 						break
 				print("vid_id="+vid_id+" vid_hash="+vid_hash)						
 				li = xbmcgui.ListItem('Start', iconImage='default')
