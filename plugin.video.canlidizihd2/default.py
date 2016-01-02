@@ -209,14 +209,14 @@ def start_video(url):
 				response = urllib2.urlopen(req)
 				link=response.read().decode('ascii','ignore')
 				response.close()
-#				print (link)
-				soup_src = BeautifulSoup(link)
-#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
-				iframe=soup_src.find("iframe")
-#				print(iframe.attrs['src'])
-				url1=iframe.attrs['src']
-#				url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
-#				print(url1)
+				if (link.find('http://ok.ru') > 0):
+					soup_src = BeautifulSoup(link)
+					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+					iframe=soup_src.find("iframe")
+					url1=iframe.attrs['src']
+				else:
+					sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
+					url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')	
 				li = xbmcgui.ListItem('Start', iconImage='icon')
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
 
@@ -241,7 +241,7 @@ def start_video(url):
 					if (link.split("|")[inter] == "vid"):
 						vid_id = link.split("|")[inter+2]
 					if (link.split("|")[inter] == "fviews"):
-						vid_hash = link.split("|")[inter-1]
+						vid_hash = link.split("|")[inter-2]
 						break
 				print("vid_id="+vid_id+" vid_hash="+vid_hash)						
 				li = xbmcgui.ListItem('Start', iconImage='default')

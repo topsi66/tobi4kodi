@@ -41,7 +41,7 @@
 
 <addon id="plugin.video.canlidizihd2"
        name="Canlidizihd2"
-       version="2.1.0"
+       version="2.1.2"
        provider-name="Tobi4Kodi">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
