@@ -6,6 +6,9 @@ import urllib
 import re
 import urlresolver
 import json
+import binascii
+import urlparse
+import ssl
 from bs4 import BeautifulSoup
 from cookielib import CookieJar
 
@@ -22,10 +25,13 @@ def INDEX_NEU(p_url):
 	print('INDEX_NEU url '+p_url)
 	req = urllib2.Request(p_url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+	req.add_header('Accept-Encoding', 'utf-8')
 	response = urllib2.urlopen(req)
-	link=response.read().decode('ascii','ignore')
+#	link=response.read().decode('ascii','ignore')
+	link=response.read()
 	response.close()
-	soup = BeautifulSoup(link, from_encoding='latin5')
+	print(link)
+	soup = BeautifulSoup(link)
 	print(soup.original_encoding)
 
 	blockneu = soup.find("div", {"id" : "diziler"})
@@ -39,10 +45,11 @@ def INDEX_ALT(p_url):
 	print('INDEX url '+p_url)
 	req = urllib2.Request(p_url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+	req.add_header('Accept-Encoding', 'utf-8')
 	response = urllib2.urlopen(req)
-	link=response.read().decode('ascii','ignore')
+	link=response.read()
 	response.close()
-	soup = BeautifulSoup(link, from_encoding='latin5')
+	soup = BeautifulSoup(link)
 	print(soup.original_encoding)
 	
 	blockneu = soup.find("div", {"id" : "en-iyiler"})
@@ -55,10 +62,11 @@ def SUB_INDEX(p_url):
 	print('SUB_INDEX url '+p_url)
 	req = urllib2.Request(p_url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+	req.add_header('Accept-Encoding', 'utf-8')
 	response = urllib2.urlopen(req)
-	link=response.read().decode('ascii','ignore')
+	link=response.read()
 	response.close()
-	soup = BeautifulSoup(link, from_encoding='latin5')
+	soup = BeautifulSoup(link)
 	
 #	blockneu = soup.find("div", {"class" : "kutu-resim"})
 	serien = soup.findAll("div", {"class" : "kutu-resim"})	
@@ -66,9 +74,13 @@ def SUB_INDEX(p_url):
 		img = i.find("img")
 		episod = i.find("a")
 #		print('SUB_INDEX href '+episod.attrs['href'])
-#		print('SUB_INDEX name '+episod.attrs['title'])
+		print('SUB_INDEX name '+episod.attrs['title'].encode('utf8'))
 #		print('SUB_INDEX img '+img.attrs['src'])	
 		addDir(episod.attrs['title'],episod.attrs['href'],4,img.attrs['src'])
+	next = soup.find("a", {"class" : "nextpostslink"})
+	if next != None:
+		addDir('Naechste Seite',next.attrs['href'],3,'default')
+#	print(next.attrs['href'])
 
 
 def start_video(url):
@@ -78,10 +90,11 @@ def start_video(url):
 		print("start_video: "+url)
 		req = urllib2.Request(url)
 		req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+		req.add_header('Accept-Encoding', 'utf-8')
 		response = urllib2.urlopen(req)
-		link=response.read().decode('ascii','ignore')
+		link=response.read()
 		soup = BeautifulSoup(link)
-		print(soup)
+#		print(soup)
 		#mydivs = soup.findAll("div", { "class" : "filmicerik" })
 		#for div in mydivs: 
 		#	gm = BeautifulSoup(div)
@@ -100,14 +113,24 @@ def start_video(url):
 			print (iframes)
 
 		else:
+			
 			iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+			if len(iframes) < 1:
+				iframes = [i.find('iframe') for i in soup('div', {'class': 'video'})]
 #		iframes = [i.find('iframe') for i in soup('div', {'id': 'konumuz'})]
+#<iframe src="http://www.canlidizihd4.org/player/ok/13.php?v=aHR0cHM6Ly9vay5ydS92aWRlby84NDcyNTg2MDg5OQ==" scrolling="no" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" frameborder="0" height="400" width="100%"></iframe>
+		print ('iframes ')
+		print (iframes)
 		for i in iframes:
+			print(i);
+			if i==None : 
+				break
 			print('starte video src '+i.attrs['src'])
 			if (i.attrs['src'].find('netd.com')	> 0):
 				print('netd.com')
 				req = urllib2.Request(i.attrs['src'])
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
 				link=response.read()
 			#	link=link.replace('\xf6',"o").replace('\xd6',"O").replace('\xfc',"u").replace('\xdd',"I").replace('\xfd',"i").replace('\xe7',"c").replace('\xde',"s").replace('\xfe',"s").replace('\xc7',"c").replace('\xf0',"g").replace('\xC5',"S").replace('\x9E',"S")
@@ -119,6 +142,7 @@ def start_video(url):
 				
 				req = urllib2.Request(scripturl)
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
 				link=response.read()
 			#	link=link.replace('\xf6',"o").replace('\xd6',"O").replace('\xfc',"u").replace('\xdd',"I").replace('\xfd',"i").replace('\xe7',"c").replace('\xde',"s").replace('\xfe',"s").replace('\xc7',"c").replace('\xf0',"g").replace('\xC5',"S").replace('\x9E',"S")
@@ -159,9 +183,11 @@ def start_video(url):
 # http://www.canlidizihd2.net/player/ok/12.php?v=aHR0cDovL29rLnJ1L3ZpZGVvLzM2ODM1MTY2OTQy
 				req = urllib2.Request(i.attrs['src'])
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
-				link=response.read().decode('ascii','ignore')
+				link=response.read()
 				response.close()
+				print(link)
 				sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
 				url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
 				
@@ -178,12 +204,382 @@ def start_video(url):
 					
 #				li = xbmcgui.ListItem('Start', iconImage='default')
 #				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)	
-			elif (i.attrs['src'].find('canlidizihd2.net')	> 0):
+			elif (i.attrs['src'].find('canlidizihd3.com')	> 0):
+				print('canlidizihd3.com')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				print(link)
+				
+				if (link.find('http://ok.ru') > 0):
+					print('OK RU')
+					soup_src = BeautifulSoup(link)
+					#print(soup_src)
+					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+					iframe=soup_src.find("iframe")
+					#print(iframe)
+					url1=iframe.attrs['src']
+					vid_id=url1.split('/')[4]
+					print('URL1: '+url1)
+					print('ID:'+vid_id)
+					#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+					json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+					
+					# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+					req = urllib2.Request(json_url)
+					file_e =urllib2.urlopen(req)
+					json_file = unicode(file_e.read().decode('ascii','ignore'))
+					print(json_file)
+					jobj = json.loads(json_file)
+					count_obj = len(jobj['videos'])
+					if count_obj > 0:
+						movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+					print ('URL ok.ru: '+movie_url)
+					url1 = movie_url
+					
+					
+					
+					
+				else:
+					url1 = link.split('path')[1].split('"')[2]
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+			
+			elif (i.attrs['src'].find('canlidizihd5.com')	> 0):
+				#http://www.canlidizihd4.com/ask-yeniden-50-bolum-720p-hd-izle.html
+				print('canlidizihd5.com')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				print('Ausgabe canlidizihd5.com')
+				print(link)
+				
+				if (link.find('http://ok.ru') > 0):
+					print('OK RU')
+					soup_src = BeautifulSoup(link)
+					#print(soup_src)
+					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+					iframe=soup_src.find("iframe")
+					#print(iframe)
+					url1=iframe.attrs['src']
+					vid_id=url1.split('/')[4]
+					print('URL1: '+url1)
+					print('ID:'+vid_id)
+					#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+					json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+					
+					# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+					req = urllib2.Request(json_url)
+					file_e =urllib2.urlopen(req)
+					json_file = unicode(file_e.read().decode('ascii','ignore'))
+					print(json_file)
+					jobj = json.loads(json_file)
+					print(len(jobj['videos']))
+					count_obj = len(jobj['videos'])
+					if count_obj > 0:
+						movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+					print ('URL ok.ru: '+movie_url)
+					url1 = movie_url
+							
+					
+					
+				else:
+					if (link.find('dailymotion') > 0):
+						#url zuschneiden
+						tmp_url = i.attrs['src']
+						par = urlparse.parse_qs(urlparse.urlparse(tmp_url).query)
+						daily_id = par['id'][0]
+						print ('enc1 id: '+daily_id)
+						daily_id = daily_id[5:]
+						print ('enc2 id: '+daily_id)
+						daily_id = binascii.a2b_base64(daily_id)
+						print ('dec id: '+daily_id)
+						url1 = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&family_filter=0&url=%s' % daily_id
+					else:
+						url1 = link.split('path')[1].split('"')[2]
+
+				
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+				playlist = xbmc.PlayList( xbmc.PLAYLIST_VIDEO )
+				playlist.clear()
+				listitem = xbmcgui.ListItem( 'Start me', iconImage='icon', thumbnailImage="")
+				listitem.setInfo( "video", { "Title": 'Start me' } )
+				playlist.add( url1, listitem )
+				xbmc.Player(xbmc.PLAYER_CORE_MPLAYER).play( playlist )
+				xbmcplugin.endOfDirectory(addon_handle)
+			elif (i.attrs['src'].find('canlidizihd4.net')	> 0):
+				#http://www.canlidizihd4.com/ask-yeniden-50-bolum-720p-hd-izle.html
+				print('canlidizihd4.net')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				print(link)
+				
+				if (link.find('http://ok.ru') > 0):
+					print('OK RU')
+					soup_src = BeautifulSoup(link)
+					#print(soup_src)
+					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+					iframe=soup_src.find("iframe")
+					#print(iframe)
+					url1=iframe.attrs['src']
+					vid_id=url1.split('/')[4]
+					print('URL1: '+url1)
+					print('ID:'+vid_id)
+					#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+					json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+					
+					# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+					req = urllib2.Request(json_url)
+					file_e =urllib2.urlopen(req)
+					json_file = unicode(file_e.read().decode('ascii','ignore'))
+					print(json_file)
+					jobj = json.loads(json_file)
+					print(len(jobj['videos']))
+					count_obj = len(jobj['videos'])
+					if count_obj > 0:
+						movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+					print ('URL ok.ru: '+movie_url)
+					url1 = movie_url
+							
+					
+					
+				else:
+					#url1 = link.split('path')[1].split('"')[2]
+					url1 = 'http://www.canlidizihd4.net/player/ok/13.php?v=aHR0cHM6Ly9vay5ydS92aWRlby8xODAxNjYxOTk4NDM='
+
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+
+			elif (i.attrs['src'].find('ittir.in')	> 0):
+				#https://ittir.in/v/1125
+				print('ittir.in')
+#				req = urllib2.Request(i.attrs['src'])
+#				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+#				req.add_header('Accept-Encoding', 'utf-8')
+#				response = urllib2.urlopen(req)
+#				link=response.read()
+#				response.close()
+#				print(link)
+				
+
+				url1=i.attrs['src']
+				vid_id=url1.split('/')[4]
+				print('URL1: '+url1)
+				print('ID:'+vid_id)
+				#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+				json_url = 'https://ittir.in/json/'+vid_id+'.json';
+				print('json_url: '+json_url)
+				
+				
+				# https://ittir.in/json/1125.json
+				context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+				req = urllib2.Request(json_url)
+				file_e =urllib2.urlopen(req)
+				json_file = unicode(file_e.read().decode('ascii','ignore'))
+				print(json_file)
+#				jobj = json.loads(json_file)
+#				print(len(jobj['videos']))
+#				count_obj = len(jobj['videos'])
+#				if count_obj > 0:
+#					movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+#				print ('URL ok.ru: '+movie_url)
+#				url1 = movie_url	
+
+
+			elif (i.attrs['src'].find('canlidizihd5.net')	> 0):
+				#http://www.canlidizihd4.com/ask-yeniden-50-bolum-720p-hd-izle.html
+				print('canlidizihd4.net')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				print(link)
+				
+				if (link.find('http://ok.ru') > 0):
+					print('OK RU')
+					soup_src = BeautifulSoup(link)
+					#print(soup_src)
+					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+					iframe=soup_src.find("iframe")
+					#print(iframe)
+					url1=iframe.attrs['src']
+					vid_id=url1.split('/')[4]
+					print('URL1: '+url1)
+					print('ID:'+vid_id)
+					#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+					json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+					
+					# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+					req = urllib2.Request(json_url)
+					file_e =urllib2.urlopen(req)
+					json_file = unicode(file_e.read().decode('ascii','ignore'))
+					print(json_file)
+					jobj = json.loads(json_file)
+					print(len(jobj['videos']))
+					count_obj = len(jobj['videos'])
+					if count_obj > 0:
+						movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+					print ('URL ok.ru: '+movie_url)
+					url1 = movie_url
+	
+				else:
+					if (link.find('dailymotion') > 0):
+						#url zuschneiden
+						tmp_url = i.attrs['src']
+						par = urlparse.parse_qs(urlparse.urlparse(tmp_url).query)
+						daily_id = par['id'][0]
+						print ('enc1 id: '+daily_id)
+						daily_id = daily_id[5:]
+						print ('enc2 id: '+daily_id)
+						daily_id = binascii.a2b_base64(daily_id)
+						print ('dec id: '+daily_id)
+						url1 = 'plugin://plugin.video.dailymotion_com/?mode=playVideo&family_filter=0&url=%s' % daily_id
+					else:
+						sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
+						#print('url1 '+sourcex)
+						json_result = json.loads(unicode('['+sourcex+']'))
+						#url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
+						url1 = json_result[len(json_result)-1]['file']
+						#print(json_result)
+						#print(len(json_result))
+						#print(url1)
+						#url1 = link.split('path')[1].split('"')[2]
+						#url1 = 'http://canlidizihd5.com/playerz/cikis.php?link=aHR0cHM6Ly93d3c0MTQucGxheWVyY2RuLm5ldC84NS8xLzM1LUFDeHowcHQycnlXX0NlT3YxRkEvMTQ4NDc4ODExMy8xNzAxMTYvOTUyY2pGemxEREJnNElnLm1wNA==.mp4'
+
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+			elif (i.attrs['src'].find('canlidizihd4.org')	> 0):
+				#http://www.canlidizihd4.com/ask-yeniden-50-bolum-720p-hd-izle.html
+				print('canlidizihd4.com')
+				req = urllib2.Request(i.attrs['src'])
+				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
+				response = urllib2.urlopen(req)
+				link=response.read()
+				response.close()
+				print('Ausgabe canlidizihd4.org')
+				print(link)
+				
+				if (link.find('http://ok.ru') > 0):
+					print('OK RU')
+					soup_src = BeautifulSoup(link)
+					#print(soup_src)
+					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
+					iframe=soup_src.find("iframe")
+					#print(iframe)
+					url1=iframe.attrs['src']
+					vid_id=url1.split('/')[4]
+					print('URL1: '+url1)
+					print('ID:'+vid_id)
+					#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+					json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+					
+					# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+					req = urllib2.Request(json_url)
+					file_e =urllib2.urlopen(req)
+					json_file = unicode(file_e.read().decode('ascii','ignore'))
+					print(json_file)
+					jobj = json.loads(json_file)
+					print(len(jobj['videos']))
+					count_obj = len(jobj['videos'])
+					if count_obj > 0:
+						movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+					print ('URL ok.ru: '+movie_url)
+					url1 = movie_url
+							
+					
+					
+				else:
+					url1 = link.split('path')[1].split('"')[2]
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+			elif (i.attrs['src'].find('ok.ru') > 0):
+				print('OK RU')
+				url1=i.attrs['src']
+				vid_id=url1.split('/')[4]
+				print('URL1: '+url1)
+				print('ID:'+vid_id)
+				#json_url = 'http://www.odnoklassniki.ru/dk?cmd=videoPlayerMetadata&mid='+vid_id+'&amp;playerId=embed_video_'+vid_id+'&amp;autoplay=false&amp;wmode=opaque&amp;stageVideo=false'
+				json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+				
+				# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+				req = urllib2.Request(json_url)
+				file_e =urllib2.urlopen(req)
+				json_file = unicode(file_e.read().decode('ascii','ignore'))
+				print(json_file)
+				jobj = json.loads(json_file)
+				print(len(jobj['videos']))
+				count_obj = len(jobj['videos'])
+				if count_obj > 0:
+					movie_url = urllib.unquote(jobj['videos'][count_obj-1]['url'])
+				print ('URL ok.ru: '+movie_url)
+				url1 = movie_url				
+				
+				li = xbmcgui.ListItem('Start', iconImage='icon')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url1, listitem=li)				
+
+				parts = soup.find("div", {"id" : "part"})
+				print(parts)
+				allp = parts.findAll("a")
+				for parturl in allp:
+					if (parturl["href"]<>""):
+						addDir(parturl.string,parturl["href"],4,'default')
+						
+			elif (i.attrs['src'].find('canlidizihd2.net')	> 0) :
 				print('canlidizihd2.net')
 				req = urllib2.Request(i.attrs['src'])
 #				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
-				link=response.read().decode('ascii','ignore')
+				link=response.read()
 				response.close()
 				sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
 				url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')
@@ -206,14 +602,33 @@ def start_video(url):
 #http://www.canlidizihd2.org/player/ok/12.php?v=aHR0cDovL29rLnJ1L3ZpZGVvLzM5MzYyNjkzODU0
 				req = urllib2.Request(i.attrs['src'])
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
-				link=response.read().decode('ascii','ignore')
+				link=response.read()
 				response.close()
 				if (link.find('http://ok.ru') > 0):
+					print('OK RU')
 					soup_src = BeautifulSoup(link)
 					#<iframe width='100%' height='100%' src='http://ok.ru/videoembed/39362693854' frameborder='0' allowfullscreen></iframe>
 					iframe=soup_src.find("iframe")
 					url1=iframe.attrs['src']
+					print('URL1: '+url1)
+					print('ID:'+url1.split('/')[4])
+					json_url = 'http://ok.ru/dk?cmd=videoPlayerMetadata&mid='+url1.split('/')[4]
+					
+					# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
+					req = urllib2.Request(json_url)
+					file_e =urllib2.urlopen(req)
+					json_file = unicode(file_e.read())
+					print(json_file)
+					jobj = json.loads(json_file)
+					movie_url = urllib.unquote(jobj['videos'][4]['url'])
+					print ('URL ok.ru: '+movie_url)
+					url1 = movie_url
+					
+					
+					
+					
 				else:
 					sourcex = link.split('sources')[1].split('[')[1].split(']')[0]
 					url1=sourcex.split('"')[3].split('"')[0].replace("\\",'')	
@@ -234,8 +649,9 @@ def start_video(url):
 				print('vid.ag')
 				req = urllib2.Request(i.attrs['src'])
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
-				link=response.read().decode('ascii','ignore')
+				link=response.read()
 				response.close()
 				for inter in range(1,50):
 					if (link.split("|")[inter] == "vid"):
@@ -248,20 +664,38 @@ def start_video(url):
 				xbmcplugin.addDirectoryItem(handle=addon_handle, url='http://vid.ag/'+vid_hash+".m3u8", listitem=li)				
 			elif (i.attrs['src'].find('vk.com') > 0):
 			# url360=http://cs634202v6.vk.me/u294779102/videos/47fab64a09.360.mp4?extra=utKtnOoq241Iag5Cv7QEQsfzgfJ4gUR9NpJhb48_MKv9jmBmPgIPvg7ywAOEy-VTsvKd5fwEc7d3dNRYQwy5R_jT_HCSTZEs8s8xges83UMFJeBy9N4v8ZqmLSyF31fh2g&amp
-				req = urllib2.Request('http:'+i.attrs['src'])
+# https://vk.com/video_ext.php?oid=363927375&id=456239586&hash=df21543ee5a4f9ff&hd=2
+				if (i.attrs['src'].count('http') > 0):
+					print('https:')
+					req = urllib2.Request(i.attrs['src'])
+				else:
+					print('else:')
+					req = urllib2.Request('http:'+i.attrs['src'])
+				
 				req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+				req.add_header('Accept-Encoding', 'utf-8')
 				response = urllib2.urlopen(req)
 				link=response.read()
 				response.close()
-				posxlink=link.find('url360=')
+				print(link)
+
+				posxlink=link.find('url360')
+				print('PosX: '+str(posxlink))
+				posylink=link.find(',',posxlink)
+				print('PosY: '+str(posylink))
+				print ('vk vid src: '+link[posxlink+9:posylink].replace('&amp','').replace('"','').replace('\\',''))
+
+#				posxlink=link.find('url360=')
 #				posxlink=link.find('url240=')
-				print(posxlink)
-				posylink=link.find('?',posxlink)
-				print(posylink)
-				print (link[posxlink+7:posylink].replace('&amp',''))
+#				print('PosX: '+str(posxlink))
+#				posylink=link.find('?',posxlink)
+#				print(posylink)
+#				print (link[posxlink+7:posylink].replace('&amp',''))
+
 				
 				li = xbmcgui.ListItem('Start', iconImage='icon')
-				xbmcplugin.addDirectoryItem(handle=addon_handle, url=link[posxlink+7:posylink].replace('&amp',''), listitem=li)
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=link[posxlink+9:posylink].replace('&amp','').replace('"','').replace('\\',''), listitem=li)
+#				xbmcplugin.addDirectoryItem(handle=addon_handle, url=link[posxlink+7:posylink].replace('&amp',''), listitem=li)
 			elif (i.attrs['src'].find('mail.ru') > 0):
 				# 'http://videoapi.my.mail.ru/videos/embed/mail/acundizi/_myvideo/1555.html'
 				json_url = i.attrs['src'].replace('.html','.json').replace('/embed','')
@@ -277,6 +711,7 @@ def start_video(url):
 						cookies[cookie.name]=cookie.value	
 				req = urllib2.Request(json_url)
 				req.add_header('Cookie', 'video_key='+cookies['video_key'])
+				req.add_header('Accept-Encoding', 'utf-8')
 				file_e =urllib2.urlopen(req)
 				json_file = unicode(file_e.read())
 				jobj = json.loads(json_file)
@@ -314,8 +749,10 @@ def start_video(url):
 				# http://www.dailymotion.com/embed/video/x2egjbg?autoplay=0&logo=1&hideInfos=0&start=0&syndication=134357&foreground=&highlight=&background=
 				icon = "DefaultVideo.png"				
 				video_url = i.attrs['src'].split('?')[0]
+				print('video_url: '+video_url)
 #				url='http://www.dailymotion.com/embed/video/x2egjbg'
 				video_id = i.attrs['src'].replace('//','').split('/')[3].split('?')[0]
+				print('video ID: '+video_id)
 #				playback_url = urlresolver.resolve(video_url)
 #				hosted_media_file = HostedMediaFile(url=url)
 #				playback_url = hosted_media_file.resolve()
@@ -342,14 +779,14 @@ def start_video(url):
 				
 def addLink(name,url,iconimage):
         ok=True
-        liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
-        liz.setInfo( type="Video", infoLabels={ "Title": name } )
+        liz=xbmcgui.ListItem(name.encode('utf8'), iconImage="DefaultVideo.png", thumbnailImage=iconimage)
+        liz.setInfo( type="Video", infoLabels={ "Title": name.encode('utf8') } )
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
         return ok
 
 
 def addDir(name,url,mode,iconimage):
-        u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
+        u=sys.argv[0]+"?url="+urllib.quote_plus(url.encode('utf8'))+"&mode="+str(mode)+"&name="+urllib.quote_plus(name.encode('utf8'))
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
